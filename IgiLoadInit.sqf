@@ -18,19 +18,18 @@ while {true} do
 {
 	sleep (IL_Check_Veh_Min + (random (IL_Check_Veh_Max - IL_Check_Veh_Min)));
 
-	//Delete vehicles from "IL_Veh_Array" if not in "vehicles"
+	// Remove null vehicles from IL_Veh_Array
 	{
-		if !(_x in vehicles) then
-		{
-			IL_Veh_Array = IL_Veh_Array - [_x];
-		};
-	} forEach (IL_Veh_Array);
+		IL_Veh_Array = IL_Veh_Array - [_x];
+	} forEach (IL_Veh_Array - vehicles);
+
+	// Add new vehicles to IL_Veh_Array
 	{
-		if (((typeOf _x) in (IL_Supported_Vehicles_All)) && !(_x in IL_Veh_Array)) then
+		if ((typeOf _x) in IL_Supported_Vehicles_All) then
 		{
 			IL_Veh_Array = IL_Veh_Array + [_x];
             _script = [_x] execVM "IgiLoad\IgiLoad.sqf";
             waitUntil { scriptDone _script; };
 		};
-	} forEach (vehicles);
+	} forEach (vehicles - IL_Veh_Array);
 };
