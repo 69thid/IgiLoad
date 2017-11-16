@@ -1,20 +1,16 @@
 IL_EV_Count = 0;
 IL_Veh_Array = [];
 
-waitUntil
-{
-    time > 0;
-    scriptDone ([player] execVM "IgiLoad\IgiLoad.sqf");
-};
+waitUntil { time > 0; };
+private _script = [player] execVM "IgiLoad\IgiLoad.sqf";
+waitUntil { scriptDone _script; };
 
 {
 	if ((typeOf _x) in (IL_Supported_Vehicles_All)) then
 	{
 		IL_Veh_Array = IL_Veh_Array + [_x];
-		waitUntil
-        {
-            scriptDone ([_x] execVM "IgiLoad\IgiLoad.sqf");
-        };
+        _script = [_x] execVM "IgiLoad\IgiLoad.sqf";
+        waitUntil { scriptDone _script; };
 	};
 } forEach (vehicles);
 
@@ -33,10 +29,8 @@ while {true} do
 		if (((typeOf _x) in (IL_Supported_Vehicles_All)) && !(_x in IL_Veh_Array)) then
 		{
 			IL_Veh_Array = IL_Veh_Array + [_x];
-            waitUntil
-            {
-                scriptDone ([_x] execVM "IgiLoad\IgiLoad.sqf");
-            };
+            _script = [_x] execVM "IgiLoad\IgiLoad.sqf";
+            waitUntil { scriptDone _script; };
 		};
 	} forEach (vehicles);
 };
